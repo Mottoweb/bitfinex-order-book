@@ -1,6 +1,9 @@
 import React from 'react';
+import { Button } from '@blueprintjs/core';
+
 import logo from './logo.svg';
 import './App.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
 
 function App() {
   return (
@@ -8,8 +11,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Edit <code>src/App.js</code> and save to reload!.
         </p>
+        <Button intent="success" text="button content" />
         <a
           className="App-link"
           href="https://reactjs.org"
