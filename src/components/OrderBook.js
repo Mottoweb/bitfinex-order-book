@@ -80,9 +80,9 @@ const OrderBook = ({ makeConnection, orderBook, loading, scale }) => {
                   backgroundImage: getProgressStyle()
                 }}
               >
-                <td>{renderAmount(element)}</td>
-                <td>{total}</td>
                 <td>{renderPrice(element)}</td>
+                <td>{total}</td>
+                <td>{renderAmount(element)}</td>
                 <td>{renderCount(element)}</td>
               </tr>
             );

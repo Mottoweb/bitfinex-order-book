@@ -1,4 +1,4 @@
-import { makeConnection } from './socket'
+import { makeConnection } from './socket';
 
 export const CREATE_ORDER_BOOK = 'CREATE_ORDER_BOOK';
 export const UPDATE_ORDER_BOOK = 'UPDATE_ORDER_BOOK';
@@ -17,21 +17,19 @@ export const updateOrderBook = data => ({
 });
 
 export const updateBookDepth = data => dispatch => {
-  dispatch(makeConnection(data))
-}
+  dispatch(makeConnection(data));
+};
 
 export const updateBookScale = data => ({
   type: UPDATE_BOOK_SCALE,
-  payload: data,
-})
+  payload: data
+});
 
 // order book reducer
 const initialState = {
-  data: [
-    [],
-  ],
+  data: [[]],
   isLoading: true,
-  scale: 1,
+  scale: 1
 };
 
 export default function reducer(state = initialState, { type, payload }) {
@@ -47,46 +45,78 @@ export default function reducer(state = initialState, { type, payload }) {
       const [price, count, amount] = data;
       let newBook;
       if (count > 0) {
+        // update
+        let updated;
         newBook = state.data.map((el, i) => {
           const [elPrice] = el;
           if (price === elPrice) {
             if ((amount > 0 && i < 25) || (amount < 0 && i > 24)) {
+              updated = true;
               return data;
             }
           }
           return el;
         });
+
+        if (!updated) {
+          const bidBook = state.data.slice(0, 25);
+          const askBook = state.data.slice(25);
+          const srtFn = (a, b) => (a[0] > b[0] ? 1 : -1);
+          if (amount > 0) {
+            bidBook.push(data);
+            bidBook.sort(srtFn);
+            bidBook.pop();
+          } else {
+            askBook.push(data);
+            askBook.sort(srtFn);
+            askBook.pop();
+          }
+          newBook = bidBook.concat(askBook);
+        }
+
         return {
           ...state,
           data: newBook
         };
-      } else {
-        return state;
+      } else if (count === 0) {
+        newBook = state.data.map(el => {
+          const [elPrice, elCount, elAmount] = el;
+          if (price === elPrice) {
+            return [elPrice, elCount + count, elAmount];
+          }
+          return el;
+        });
+
+        return {
+          ...state,
+          data: newBook
+        };
       }
+      return state
     }
     case UPDATE_BOOK_DEPTH_START: {
-      return ({ 
+      return {
         ...state,
-        isLoading: true,
-      })
+        isLoading: true
+      };
     }
     case UPDATE_BOOK_DEPTH_FINISH: {
-      return ({ 
+      return {
         ...state,
-        isLoading: false,
-      })
+        isLoading: false
+      };
     }
     case UPDATE_BOOK_SCALE: {
-      return ({ 
+      return {
         ...state,
-        scale: payload,
-      })
+        scale: payload
+      };
     }
     default:
       return state;
   }
 }
 
-export const selectOrderBook = state => state.orderBook.data
-export const selectIsLoading = state => state.orderBook.isLoading
-export const selectOrderBookScale = state => state.orderBook.scale
+export const selectOrderBook = state => state.orderBook.data;
+export const selectIsLoading = state => state.orderBook.isLoading;
+export const selectOrderBookScale = state => state.orderBook.scale;
