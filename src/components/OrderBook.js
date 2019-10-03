@@ -18,9 +18,9 @@ const OrderBook = ({ makeConnection, orderBook, loading, scale }) => {
 
   const renderCount = element => !loading && element[1];
   const renderAmount = element => !loading && Math.abs(Math.round(element[2]));
-  const renderTotal = (element, index) => {
+  const renderTotal = (array, index) => {
     const getTotal = () =>
-      orderBook
+    array
         .slice(0, index + 1)
         .reduce((acc, value) => acc + Math.abs(value[2]), 0);
     return !loading ? Math.abs(Math.round(getTotal())) : null;
@@ -39,8 +39,8 @@ const OrderBook = ({ makeConnection, orderBook, loading, scale }) => {
           </tr>
         </thead>
         <tbody>
-          {bidBook.map((element, index) => {
-            const total = renderTotal(element, index);
+          {bidBook.map((element, index, array) => {
+            const total = renderTotal(array, index);
             const scaledTotal = total * scale;
             const getProgressStyle = () =>
               `linear-gradient(to left,green ${scaledTotal}%, #282c34 ${scaledTotal}%)`;
@@ -69,8 +69,8 @@ const OrderBook = ({ makeConnection, orderBook, loading, scale }) => {
           </tr>
         </thead>
         <tbody>
-          {askBook.map((element, index) => {
-            const total = renderTotal(element, index);
+          {askBook.map((element, index, array) => {
+            const total = renderTotal(array, index);
             const scaledTotal = total * scale;
             const getProgressStyle = () =>
               `linear-gradient(to right,red ${scaledTotal}%, #282c34 ${scaledTotal}%)`;
