@@ -1,27 +1,24 @@
 import React from 'react';
-import { Button } from '@blueprintjs/core';
+
+import OrderBook from './components/OrderBook';
+import DepthControl from './components/DepthControl';
+import ConnectButtons from './components/ConnectButtons';
 
 import logo from './logo.svg';
 import './App.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
+import '@blueprintjs/table/lib/css/table.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload!.
-        </p>
-        <Button intent="success" text="button content" />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ConnectButtons />
+        <h2>Order Book</h2>
+        <DepthControl />
+        <OrderBook />
       </header>
     </div>
   );

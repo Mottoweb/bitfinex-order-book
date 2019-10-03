@@ -1,0 +1,8 @@
+.orderBookWrapper {
+  display: flex;
+}
+.table {
+  font-size: 10px;
+  min-width: 300px;
+  display: table;
+}

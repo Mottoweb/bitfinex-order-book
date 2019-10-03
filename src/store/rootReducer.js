@@ -1,10 +1,6 @@
-const initialState = {
-  app: "bitfinex",
-};
+import { combineReducers } from 'redux'
+import orderBookReducer from './orderBook'
 
-export default function reducer(state = initialState, { type, payload }) {
-  switch (type) {
-    default:
-      return state;
-  }
-}
+const rootReducer = combineReducers({ orderBook: orderBookReducer })
+
+export default rootReducer
